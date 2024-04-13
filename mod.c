@@ -1,41 +1,32 @@
+#include <stdio.h>
+#include <ctype.h>
+#include <stdlib.h>
+#include <string.h>
 #include "monty.h"
-/**
- * f_mod - computes the rest of the division of the second
- * top element of the stack by the top element of the stack
- * @head: stack head
- * @counter: line_number
- * Return: no return
-*/
-void f_mod(stack_t **head, unsigned int counter)
-{
-	stack_t *h;
-	int len = 0, aux;
 
-	h = *head;
-	while (h)
+/**
+ * f_mod - reminder of devisor
+ * @customStack: customStack given by main
+ * @line_num: line counter
+ */
+void f_mod(stack_t **customStack, unsigned int line_num)
+{
+	int answer;
+
+	if (!customStack || !*customStack || !((*customStack)->next))
 	{
-		h = h->next;
-		len++;
-	}
-	if (len < 2)
-	{
-		fprintf(stderr, "L%d: can't mod, stack too short\n", counter);
-		fclose(bus.file);
-		free(bus.content);
-		free_stack(*head);
+		fprintf(stderr, "L%d: can't f_mod, stack too short\n", line_num);
 		exit(EXIT_FAILURE);
+		return;
 	}
-	h = *head;
-	if (h->n == 0)
+	if (((*customStack)->n) == 0)
 	{
-		fprintf(stderr, "L%d: division by zero\n", counter);
-		fclose(bus.file);
-		free(bus.content);
-		free_stack(*head);
+		fprintf(stderr, "L%d: division by zero\n", line_num);
 		exit(EXIT_FAILURE);
+		return;
 	}
-	aux = h->next->n % h->n;
-	h->next->n = aux;
-	*head = h->next;
-	free(h);
+
+	answer = ((*customStack)->next->n) % ((*customStack)->n);
+	pop(customStack, line_num);/*For top node*/
+	(*customStack)->n = answer;
 }

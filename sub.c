@@ -1,29 +1,26 @@
+#include <stdio.h>
+#include <ctype.h>
+#include <stdlib.h>
+#include <string.h>
 #include "monty.h"
-/**
-  *f_sub- sustration
-  *@head: stack head
-  *@counter: line_number
-  *Return: no return
- */
-void f_sub(stack_t **head, unsigned int counter)
-{
-	stack_t *aux;
-	int sus, nodes;
 
-	aux = *head;
-	for (nodes = 0; aux != NULL; nodes++)
-		aux = aux->next;
-	if (nodes < 2)
+/**
+ * sub - Performs subtraction on the first two nodes of the customStack.
+ *
+ * @customStack: The customStack provided by main.
+ * @line_num: Line count.
+ */
+void sub(stack_t **customStack, unsigned int line_num)
+{
+	int answer;
+
+	if (!customStack || !*customStack || !((*customStack)->next))
 	{
-		fprintf(stderr, "L%d: can't sub, stack too short\n", counter);
-		fclose(bus.file);
-		free(bus.content);
-		free_stack(*head);
+		fprintf(stderr, "L%d: can't sub, stack too short\n", line_num);
 		exit(EXIT_FAILURE);
 	}
-	aux = *head;
-	sus = aux->next->n - aux->n;
-	aux->next->n = sus;
-	*head = aux->next;
-	free(aux);
+
+	answer = ((*customStack)->next->n) - ((*customStack)->n);
+	pop(customStack, line_num);
+	(*customStack)->n = answer;
 }
